@@ -67,9 +67,7 @@ const App = function () {
   };
 
   const handleAddAndEdit = (id = editId) => {
-    console.log("line 64", editId);
     if (isEditing) {
-      console.log("line 66");
       dispatch({ type: "editTodo", payload: { id: editId, title: title } });
       setIsEditing(!isEditing);
       setTitle("");
@@ -103,6 +101,7 @@ const App = function () {
               completed={task.completed}
               setTitle={setTitle}
               handleEditing={handleEditing}
+              isEditing={isEditing}
             />
           );
         })}

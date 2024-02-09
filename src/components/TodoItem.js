@@ -1,12 +1,10 @@
-import { useState } from "react";
-
 export default function TodoItem({
   title,
   id,
   dispatch,
   completed,
-  setTitle,
   handleEditing,
+  isEditing,
 }) {
   return (
     <div
@@ -25,10 +23,16 @@ export default function TodoItem({
           dispatch({ type: "toggleCompleted", payload: { id } });
         }}
       ></input>{" "}
-      <p>title {title} </p>
-      <p>completed: {completed.toString()} </p>{" "}
-      <button onClick={() => handleEditing(title, id)}>Edit</button>{" "}
+      <p> {title} </p>
+      {/* <p>completed: {completed.toString()} </p>{" "} */}
       <button
+        style={{ display: isEditing ? "none" : "block" }}
+        onClick={() => handleEditing(title, id)}
+      >
+        Edit
+      </button>{" "}
+      <button
+        style={{ display: isEditing ? "none" : "block" }}
         onClick={() => {
           dispatch({ type: "deleteTodo", payload: { id } });
         }}
