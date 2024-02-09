@@ -1,4 +1,13 @@
-export default function TodoItem({ title, id, dispatch, completed }) {
+import { useState } from "react";
+
+export default function TodoItem({
+  title,
+  id,
+  dispatch,
+  completed,
+  setTitle,
+  handleEditing,
+}) {
   return (
     <div
       style={{
@@ -18,13 +27,7 @@ export default function TodoItem({ title, id, dispatch, completed }) {
       ></input>{" "}
       <p>title {title} </p>
       <p>completed: {completed.toString()} </p>{" "}
-      <button
-        onClick={() => {
-          dispatch({ type: "editTodo", payload: { id, title } });
-        }}
-      >
-        Edit
-      </button>{" "}
+      <button onClick={() => handleEditing(title, id)}>Edit</button>{" "}
       <button
         onClick={() => {
           dispatch({ type: "deleteTodo", payload: { id } });

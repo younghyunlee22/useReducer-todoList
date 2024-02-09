@@ -34,7 +34,16 @@ const reducer = (state, action) => {
       );
     }
     case "editTodo": {
-      return;
+      console.log("line 37", action.payload);
+      console.log("line 38", action.payload.id);
+      return state.map((task) =>
+        task.id === action.payload.id
+          ? {
+              ...task,
+              title: action.payload.title,
+            }
+          : task
+      );
     }
     default: {
       throw Error("Unknown Action: " + action.type);
@@ -45,10 +54,34 @@ const reducer = (state, action) => {
 const App = function () {
   const [title, setTitle] = useState("");
   const [tasks, dispatch] = useReducer(reducer, initialState);
+  const [editId, setEditId] = useState(null);
+
+  const [isEditing, setIsEditing] = useState(false);
+
+  const handleEditing = (title, id) => {
+    if (isEditing) {
+      setTitle("");
+    } else {
+      setTitle(title);
+      setEditId(id);
+    }
+    setIsEditing(!isEditing);
+  };
+
+  const handleAddAndEdit = (id = editId) => {
+    console.log("line 64", editId);
+    if (isEditing) {
+      console.log("line 66");
+      dispatch({ type: "editTodo", payload: { id: editId, title: title } });
+    } else {
+      dispatch({ type: "addTodo", payload: { title: title } });
+      setTitle("");
+    }
+  };
 
   return (
     <div>
-      <h2>Create Todo List Practice</h2>
+      <h2>Create Todo List</h2>
       <input
         type="text"
         placeholder="Add task"
@@ -56,13 +89,7 @@ const App = function () {
         onChange={(e) => setTitle(e.target.value)}
       />
 
-      <button
-        onClick={() => {
-          dispatch({ type: "addTodo", payload: { title: title } });
-        }}
-      >
-        Add
-      </button>
+      <button onClick={handleAddAndEdit}> {isEditing ? "Save" : "Add"} </button>
 
       {tasks
         .sort((a, b) => b.id - a.id)
@@ -74,6 +101,8 @@ const App = function () {
               id={task.id}
               dispatch={dispatch}
               completed={task.completed}
+              setTitle={setTitle}
+              handleEditing={handleEditing}
             />
           );
         })}
