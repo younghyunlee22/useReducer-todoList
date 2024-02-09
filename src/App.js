@@ -34,8 +34,6 @@ const reducer = (state, action) => {
       );
     }
     case "editTodo": {
-      console.log("line 37", action.payload);
-      console.log("line 38", action.payload.id);
       return state.map((task) =>
         task.id === action.payload.id
           ? {
@@ -73,6 +71,8 @@ const App = function () {
     if (isEditing) {
       console.log("line 66");
       dispatch({ type: "editTodo", payload: { id: editId, title: title } });
+      setIsEditing(!isEditing);
+      setTitle("");
     } else {
       dispatch({ type: "addTodo", payload: { title: title } });
       setTitle("");
